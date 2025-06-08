@@ -2,11 +2,12 @@
   "name": "summarizer",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts",
+    "dev": "netlify dev",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/app.js",
+    "dev:local": "tsx watch src/app.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +21,10 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "natural": "^8.1.0",
+    "netlify-lambda": "^2.0.16",
     "node-cron": "^4.1.0",
-    "openai": "^5.0.1"
+    "openai": "^5.0.1",
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
     "@types/axios": "^0.9.36",
@@ -29,6 +32,7 @@
     "@types/node": "^22.15.29",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "tsx": "^4.0.0"
   }
 }

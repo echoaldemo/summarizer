@@ -359,3 +359,5 @@ Summary:`;
     }
   }
 }
+
+export default PersonalSlackSummarizer;
