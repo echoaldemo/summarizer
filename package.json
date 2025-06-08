@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "netlify dev",
     "build": "tsc",
-    "start": "node dist/app.js",
-    "dev:local": "tsx watch src/app.ts"
+    "start": "node dist/index.js",
+    "dev:local": "tsx watch src/index.ts"
   },
   "keywords": [],
   "author": "",
