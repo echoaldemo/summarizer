@@ -1,38 +1,26 @@
 {
-  "name": "summarizer",
-  "version": "1.0.0",
-  "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "netlify dev",
+    "dev": "tsx watch src/app.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev:local": "tsx watch src/index.ts"
+    "start": "node dist/app.js",
+    "postbuild": "echo 'Build completed for Railway deployment'"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "@slack/web-api": "^7.9.2",
-    "axios": "^1.9.0",
-    "body-parser": "^2.2.0",
-    "compromise": "^14.14.4",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "natural": "^8.1.0",
-    "netlify-lambda": "^2.0.16",
-    "node-cron": "^4.1.0",
-    "openai": "^5.0.1",
-    "serverless-http": "^3.2.0"
+    "express": "^4.18.0",
+    "dotenv": "^16.0.0",
+    "node-cron": "^3.0.0",
+    "@slack/web-api": "^6.0.0",
+    "openai": "^4.0.0"
   },
   "devDependencies": {
-    "@types/axios": "^0.9.36",
-    "@types/express": "^5.0.2",
-    "@types/node": "^22.15.29",
-    "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
+    "@types/express": "^4.17.0",
+    "@types/node": "^20.0.0",
+    "@types/node-cron": "^3.0.0",
+    "typescript": "^5.0.0",
     "tsx": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
