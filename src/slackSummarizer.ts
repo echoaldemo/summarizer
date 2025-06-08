@@ -309,33 +309,10 @@ Summary:`;
     }
   }
 
- async postSummary(channelId: string, summary: string): Promise<void> {
-    try {
-      console.log(`Posting summary to channel ${channelId}...`);
-      
-      const result = await this.slack.chat.postMessage({
-        channel: channelId,
-        text: summary,
-        mrkdwn: true
-      });
-      
-      if (result.ok) {
-        console.log('✅ Summary posted successfully!');
-      } else {
-        console.error('❌ Failed to post summary:', result.error);
-        throw new Error(`Failed to post summary: ${result.error}`);
-      }
-    } catch (error) {
-      console.error('❌ Error posting summary:', error);
-      throw error; // Re-throw so the calling function knows it failed
-    }
-  }
-
-  // Updated sendSummaryToMyself with better error handling
+  // Send summary to yourself
   async sendSummaryToMyself(summary: string): Promise<void> {
     try {
-      console.log('Sending summary to yourself...');
-      
+      // Open DM with yourself
       const dmResult = await this.slack.conversations.open({
         users: this.myUserId
       });
@@ -345,21 +322,29 @@ Summary:`;
         throw new Error('Could not open DM with yourself');
       }
 
-      const result = await this.slack.chat.postMessage({
+      await this.slack.chat.postMessage({
         channel: channelId,
         text: summary,
         mrkdwn: true
       });
       
-      if (result.ok) {
-        console.log('✅ Summary sent to yourself successfully!');
-      } else {
-        console.error('❌ Failed to send summary:', result.error);
-        throw new Error(`Failed to send summary: ${result.error}`);
-      }
+      console.log('Summary sent to yourself successfully!');
     } catch (error) {
-      console.error('❌ Error sending summary to yourself:', error);
-      throw error; // Re-throw so the calling function knows it failed
+      console.error('Error sending summary to yourself:', error);
+    }
+  }
+
+  // Post summary to a specific channel
+  async postSummary(channelId: string, summary: string): Promise<void> {
+    try {
+      await this.slack.chat.postMessage({
+        channel: channelId,
+        text: summary,
+        mrkdwn: true
+      });
+      console.log('Summary posted successfully!');
+    } catch (error) {
+      console.error('Error posting summary:', error);
     }
   }
 
