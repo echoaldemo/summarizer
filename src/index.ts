@@ -78,19 +78,38 @@ router.post('/slack/summarize', async (req, res) => {
     const userId = req.body.user_id;
     const text = req.body.text || '';
     const days = parseInt(text.split(' ')[0]) || 1;
+    const responseUrl = req.body.response_url;
 
-    const summarizer = new PersonalSlackSummarizer(userId);
-    
-    // Do all the work first
-    const summary = await summarizer.summarizeChannel(channelId, days);
-    await summarizer.postSummary(channelId, `<@${userId}> requested a summary:\n\n${summary}`);
+    // 1. Immediately respond to Slack
+    res.status(200).json({
+      response_type: 'ephemeral',
+      text: '⏳ Generating channel summary... You will see it here soon!'
+    });
 
-    // Then respond to Slack
-    res.status(200).send('✅ Channel summary generated and posted!');
+    // 2. Do the work asynchronously (no await here)
+    (async () => {
+      const summarizer = new PersonalSlackSummarizer(userId);
+      const summary = await summarizer.summarizeChannel(channelId, days);
+
+      // 3. Post the summary to the response_url
+      if (responseUrl) {
+        await fetch(responseUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            response_type: 'in_channel',
+            text: `<@${userId}> requested a summary:\n\n${summary}`,
+          }),
+        });
+      } else {
+        // Fallback: post to channel if response_url is missing
+        await summarizer.postSummary(channelId, `<@${userId}> requested a summary:\n\n${summary}`);
+      }
+    })();
 
   } catch (error) {
     console.error('Error handling channel summary command:', error);
-    res.status(500).send('❌ Error generating channel summary. Please try again.');
+    // You can't send another response here, but you can log the error
   }
 });
 
